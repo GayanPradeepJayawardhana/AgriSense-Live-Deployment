@@ -36,8 +36,19 @@ export const askGemini = async (prompt, context = '') => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Gemini API Error (${response.status}): ${errorData.error?.message || 'Unknown error'}`);
+      const responseText = await response.text();
+      let errorMessage = `HTTP ${response.status}`;
+      
+      if (responseText) {
+        try {
+          const errorData = JSON.parse(responseText);
+          errorMessage = errorData.error?.message || errorData.message || responseText;
+        } catch (e) {
+          errorMessage = responseText;
+        }
+      }
+      
+      throw new Error(`Gemini API Error: ${errorMessage}`);
     }
 
     const data = await response.json();
