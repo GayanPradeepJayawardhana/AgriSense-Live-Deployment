@@ -5,14 +5,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PlantingService {
+  static const String _productionUrl = 'https://agrisense-live-deployment-production.up.railway.app';
+  static const String _developmentUrl = 'http://localhost:5000';
+
   static String get _baseUrl {
     if (kIsWeb) {
-      return 'http://localhost:5000';
+      return _developmentUrl;
     }
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000';
+      return _productionUrl; // Use production URL on physical Android devices
     }
-    return 'http://localhost:5000';
+    return _developmentUrl;
   }
 
   static Future<String> getPlantingWindowRecommendation({

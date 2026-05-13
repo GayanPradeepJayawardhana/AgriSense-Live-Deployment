@@ -42,14 +42,17 @@ class WeatherData {
 }
 
 class WeatherService {
+  static const String _productionBaseUrl = 'https://agrisense-live-deployment-production.up.railway.app';
+  static const String _developmentBaseUrl = 'http://localhost:5000';
+
   static String get _baseUrl {
     if (kIsWeb) {
-      return 'http://localhost:5000/api/weather';
+      return '$_developmentBaseUrl/api/weather';
     }
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000/api/weather';
+      return '$_productionBaseUrl/api/weather'; // Use production URL on physical Android devices
     }
-    return 'http://localhost:5000/api/weather';
+    return '$_developmentBaseUrl/api/weather';
   }
 
   static Future<Map<String, String>> _getHeaders() async {

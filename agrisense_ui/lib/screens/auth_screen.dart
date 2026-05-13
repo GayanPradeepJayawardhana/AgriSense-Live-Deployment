@@ -27,8 +27,9 @@ class _AuthScreenState extends State<AuthScreen> {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   String get baseUrl {
+    // Use production URL for Android physical devices
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000'; // Android emulator
+      return 'https://agrisense-live-deployment-production.up.railway.app';
     } else {
       return 'http://localhost:5000'; // iOS simulator, web and desktop
     }
